@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<h2>Задача 1. Описать массив объектов – сайтов, разработанных компанией с такими свойствами ----- Свойства ------ название компании на время разработки (название периодически меняют) владелец компании спонсоры (массив спонсоров) * фамилия спонсора * имя спонсора * сумма вложений спонсора год выпуска стоимость сайта</h2>
+	<script>
+		const websites = [
+			{
+				company: 'Ikea',
+				owner: 'Håkan Berrgren',
+				sponsors: [
+					{
+						lastName: 'Nilson',
+						firstName: 'Andreas',
+						investment: 1000001
+					},
+					{
+						lastName: 'Anderson',
+						firstName: 'Anton',
+						investment: 15000
+					}
+				],
+				year: 2020,
+				cost: 5500
+			},
+			{
+				company: 'Post Nord',
+				owner: 'Björn Magnus',
+				sponsors: [
+					{
+						lastName: 'Hamran',
+						firstName: 'Emyli',
+						investment: 2500
+					},
+					{
+						lastName: 'Wong',
+						firstName: 'Irvin',
+						investment: 7500
+					}
+				],
+				year: 2021,
+				cost: 7200
+			},
+			{
+				company: 'Tamro',
+				owner: 'Peterson Arek',
+				sponsors: [
+					{
+						lastName: 'Marsol',
+						firstName: 'Adrian',
+						investment: 5500
+					},
+					{
+						lastName: 'Uljan',
+						firstName: 'Marek',
+						investment: 10000
+					}
+				],
+				year: 2000,
+				cost: 30000
+			},
+		]
+
+		//1) общая стоимость всех сайтов 
+		const totalCostAllSites = websites.reduce((prevSum, webCost) => prevSum + webCost.cost, 0)
+		document.write(`The total cost of all sites = ${totalCostAllSites}<br>`)
+
+		//2) количество сайтов, сделанных между 2000 и 2009 гг.
+		const countMore2000_2009 = websites.reduce((accumulator, website) => {
+			const year = website.year
+			if (year >= 2000 && year <= 2009) accumulator++
+			return accumulator
+		}, 0)
+		document.write(`Number of sites made betwwen 2000 end 2009 = ${countMore2000_2009}<br>`)
+
+		// 3) количество сайтов, где сумма спонсорских вложений была больше 100000
+		let namberOfSitesMore100000 = 0
+		for (let i = 0; i < websites.length; i++) {
+			let totalInvesment = 0
+			for (let j = 0; j < websites[i].sponsors.length; j++) {
+				totalInvesment += websites[i].sponsors[j].investment
+			}
+			if (totalInvesment >= 100000) namberOfSitesMore100000++
+		}
+		document.write(`The number of sites where sponsorship more 100000 = ${namberOfSitesMore100000}<br>`)
+
+		//4) создать общий список всех спонсоров (пока могут повторяться, просто собрать все в массив)
+		const allSponsors = websites.reduce((acc, website) => {
+			return acc.concat(website.sponsors)
+		}, [])
+		allSponsors.forEach((sponsor) => {
+			document.write(`Name sponsors ${sponsor.firstName} ${sponsor.lastName} <br>`)
+		})
+
+		//5) найти год, когда прибыль была самой большой
+		const findBiggestYear = websites.reduce((prevYear, year) =>
+			year.cost > prevYear.cost ? year : prevYear
+		)
+		console.log(findBiggestYear)
+
+		//6) упорядочить список по убыванию прибыли
+		const sortDescending = websites.sort((a, b) => {
+			return b.cost - a.cost
+		})
+		console.log(sortDescending)
+
+		//7) Создавайте 2 отдельных списка с копиями объектов, содержащих сайты со стоимостью до 10000 и более 10000
+		const copyArrListLess10000 = JSON.parse(JSON.stringify(websites.filter((site) => site.cost >= 10000)))
+		console.log(copyArrListLess10000)
+		const copyArrlistMore10000 = JSON.parse(JSON.stringify(websites.filter((sate) => sate.cost <= 10000)))
+		console.log(copyArrlistMore10000)
+	</script>
+</body>
+
+</html>
